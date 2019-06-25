@@ -10,8 +10,8 @@ type IState = {
 
 class App extends React.Component<{},IState>{
   state: IState = {
-    firstName: "",
-    lastName: ""
+    firstName: "Geir",
+    lastName: "Sørensen"
   }
 
   // myOnClickHandler = (event) => {
@@ -24,8 +24,12 @@ class App extends React.Component<{},IState>{
       <div>
         <button onClick={(event) => {
           console.log("Got event");
+          this.setState({
+            firstName: (this.state.firstName === "Geir") ? "hihi" : "Geir"
+          });
+          
         }}>Klick!</button>
-        <NameBlock name="Geir" lastName="Sørensen" />
+        <NameBlock name={this.state.firstName} lastName={this.state.lastName} />
       </div>
   );
   }
