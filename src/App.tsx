@@ -9,12 +9,12 @@ const App: React.FC = () => {
   );
 }
 
-class AppComponent extends React.Component<{},{}>{
-  render() {
-    return (
-      <NameBlock name="Geir" />
-  );
-  }
-}
+// class AppComponent extends React.Component<{},{}>{
+//   render() {
+//     return (
+//       <NameBlock name="Geir" />
+//   );
+//   }
+// }
 
 export default App;
