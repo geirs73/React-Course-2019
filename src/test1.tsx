@@ -12,6 +12,9 @@ export const NameField: React.FC<IProps> = (props) => {
 //     return "Kalle";
 // };
 
-export const NameBlock: React.FC<{name: string}> = (props) => {
-    return <NameField name={props.name}></NameField>
+export const NameBlock: React.FC<{ name: string }> = (props) => {
+    return <div>
+        <div>Name:</div> 
+        <NameField name={props.name}></NameField>
+        </div>
 };

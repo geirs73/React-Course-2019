@@ -5,10 +5,16 @@ import {NameBlock} from "./test1"
 
 const App: React.FC = () => {
   return (
-    <div className="App">
       <NameBlock name="Geir" />
-    </div>
   );
+}
+
+class AppComponent extends React.Component<{},{}>{
+  render() {
+    return (
+      <NameBlock name="Geir" />
+  );
+  }
 }
 
 export default App;
