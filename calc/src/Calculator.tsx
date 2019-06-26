@@ -6,21 +6,20 @@ import { forInStatement } from '@babel/types';
 import { number } from 'prop-types';
 
 type Operation = "*" | "-" | "+" | "/"
-type Calculation = {
-  operation: Operation;
-  value: number;
-}
+
 type ICalcState = {
-  calculations: Calculation[]
-  , values: number[]
+  values: number[],
+  operation: Operation,
+  register: number
 };
 
 
 
 export class Calculator extends React.PureComponent<{}, ICalcState>{
   state: ICalcState = {
-    calculations: [],
-    values: []
+    values: [],
+    register: 0,
+    operation: "+"
   }
 
   onPressValue = (val: number) => {
@@ -33,37 +32,44 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
 
 
   onPlusClick = () => {
-              let tall = 0;
-              let i = 0;
-              for (i = 0; i < this.state.values.length; i++ )
-              {
-                tall = tall + this.state.values[i] * Math.pow(10, this.state.values.length - i - 1);
-              }
-              // const newCalcs = 
-            //  this.state.values.reduce((x, i)=> { tall + x * Math.pow(10, i) } )
-              this.setState (
-                {
-                  calculations: [{operation: "+", value: tall}],
-                  values: []
-                }
-              )
-            }
+
+    //  this.state.values.reduce((x, i)=> { tall + x * Math.pow(10, i) } )
+    this.setState(
+      {
+        register: this.convertEntriesToNumber(),
+        operation: "+",
+        values: []
+      }
+    )
+  }
+
+  onResultClick = () => {
+    let tmpRes = 0;
+    let i = 0;
+    tmpRes = this.state.register + this.convertEntriesToNumber();
+  
+    this.setState({
+      values: [],
+      operation: "+",
+      register: tmpRes
+    })
+  }
+
+  private convertEntriesToNumber() {
+    let tall = 0;
+    let i = 0;
+    for (i = 0; i < this.state.values.length; i++) {
+      tall = tall + this.state.values[i] * Math.pow(10, this.state.values.length - i - 1);
+    }
+    return tall;
+  }
 
   render() {
     return (
       <div style={{ backgroundColor: "gray" }}>
+
         <h1 >Calculator </h1>
-        <p>Calcs:<br></br>
-        {
-            this.state.calculations.map((v) => {
-              return (
-                <span> {v.value} {v.operation} </span>
-              )
-            })
-          }
-        
-         </p>
-        <p>Number: </p>
+        <p>Numbers: </p>
         <p>
           {
             this.state.values.map((v) => {
@@ -73,6 +79,7 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
             })
           }
         </p>
+        <p>Result: {this.state.register}</p>
         {/* <input type={{text}}></input> */}
         <div>
           <div style={{ float: "left" }}>
@@ -100,8 +107,8 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
             <div><button>-</button></div>
             <div><button>/</button></div>
             <div><button>*</button></div>
-            <div><button>=</button>
-              <button onClick={(e) => { this.setState({ calculations: [], values: [] }) }}> C</button></div>
+            <div><button onClick={() => this.onResultClick()}>=</button>
+              <button onClick={(e) => { this.setState({  values: [], register: 0, operation: "+" }) }}> C</button></div>
           </div>
         </div>
       </div>
