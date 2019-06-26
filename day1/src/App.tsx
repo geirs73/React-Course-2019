@@ -9,7 +9,7 @@ type IState = {
   firstName: string;
 };
 
-class App extends React.Component<{},IState>{
+export class App extends React.Component<{},IState>{
   state: IState = {
     firstName: "Geir",
     lastName: "Sørensen"
@@ -48,4 +48,3 @@ class App extends React.Component<{},IState>{
   }
 }
 
-export default App;
