@@ -8,6 +8,9 @@ type IState = {
   lastName: string;
   firstName: string;
 };
+interface IProps 
+   { 
+     lastName: String; }
 
 export class App extends React.Component<{},IState>{
   state: IState = {
@@ -24,6 +27,12 @@ export class App extends React.Component<{},IState>{
     this.setState({
       firstName: (this.state.firstName === "Geir") ? "hihi" : "Geir"
     });
+  }
+   
+
+  shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IProps>, nextContext: any) {
+    // set false then updates will stop
+    return true;
   }
 
   render() {
@@ -43,7 +52,9 @@ export class App extends React.Component<{},IState>{
             });
           }} value = {this.state.lastName} ></input>
         <NameBlock name={this.state.firstName} lastName={this.state.lastName} />
+        
       </div>
+
   );
   }
 }
