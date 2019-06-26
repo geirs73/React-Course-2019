@@ -1,9 +1,7 @@
 import * as React from 'react';
 import './Calculator.css'
 import { KeyPad } from './components/KeyPad'
-
-
-type Operation = "*" | "-" | "+" | "/"
+import { Operation } from './CalculatorTypes'
 
 type ICalcState = {
   values: number[],
@@ -17,7 +15,7 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
   state: ICalcState = {
     values: [],
     register: 0,
-    operation: "+"
+    operation: "nop"
   }
 
   onPressValue = (val: number) => {
@@ -29,33 +27,60 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
   }
 
 
-  onPlusClick = () => {
+  onOperatorClick = (op: Operation) => {
 
-    //  this.state.values.reduce((x, i)=> { tall + x * Math.pow(10, i) } )
     this.setState(
       {
-        register: this.convertEntriesToNumber(),
-        operation: "+",
+        register: this.state.register,
+        operation: op,
         values: []
       }
     )
   }
 
   onResultClick = () => {
-    let tmpRes = 0;
-    tmpRes = this.state.register + this.convertEntriesToNumber();
+    let tmpValue:number = this.calculateResult(this.state.operation)
 
     this.setState({
       values: [],
-      operation: "+",
-      register: tmpRes
+      operation: "nop",
+      register: tmpValue
     })
   }
 
   onResetClick = () => {
-     this.setState({ 
-        values: [], register: 0, operation: "+"
-       });
+    this.setState({
+      values: [], register: 0, operation: "+"
+    });
+  }
+
+  private calculateResult(operator: Operation) {
+    let tmpRes = 0;
+    switch (operator) {
+      case "+": {
+        tmpRes = this.state.register + this.convertEntriesToNumber();
+        break;
+      }
+      case "-": {
+        tmpRes = this.state.register - this.convertEntriesToNumber();
+        break;
+      }
+      case "*": {
+        tmpRes = this.state.register * this.convertEntriesToNumber();
+        break;
+      }
+      case "/": {
+        tmpRes = this.state.register / this.convertEntriesToNumber();
+        break;
+      }
+      default: {
+        tmpRes = 0
+        break;
+      }
+    }
+
+    tmpRes = this.state.register + this.convertEntriesToNumber();
+    return tmpRes;
   }
 
   private convertEntriesToNumber() {
@@ -69,28 +94,34 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
 
   render() {
     return (
-      <div style={{ backgroundColor: "gray" }}>
+      <div style={{ backgroundColor: "lightgray", margin: "15px", padding: "30px", width: "350px", height: "500px" }}>
 
-        <h1 >Calculator </h1>
-        
-        <p>Register: {this.state.register}</p>
-        <p>Entry: 
-          {
-            this.state.values.map((v) => {
-              return (
-                <span>{v}</span>
-              )
-            })
-          }
-        </p>
-        <KeyPad 
-          onPlusClick = {this.onPlusClick}
-          onPressValue = {this.onPressValue}
-          onResetClick = {this.onResetClick}  
-          onResultClick = {this.onResultClick}
-          ></KeyPad>
-       
-
+        <h1 style={{textAlign: "center"}}>Calculator </h1>
+        <div>
+          <div style={{ float: "left", width: "35px", height: "18pt" }}>Register:</div>
+          <div style={{ backgroundColor: "white", width: "200px", float: "right" }}>
+            <span style={{ float: "right", fontSize: "18pt",  lineHeight: "18pt"  }}>{this.state.register}</span></div>
+          <div style={{ float: "left", width: "35px", height: "25pt", clear: "left",  lineHeight: "18pt"  }}>Entry: </div>
+          <div style={{ backgroundColor: "white", width: "200px", float: "right" }}>
+            <span style={{ float: "right", fontSize: "18pt"}}>
+              &nbsp;
+              {
+                this.state.values.map((v) => {
+                  return (
+                    <span>{v}</span>
+                  )
+                })
+              } 
+            </span>
+          </div>
+          <div style={{ float: "right", clear: "left", paddingTop: "50px" }}>
+            <KeyPad
+              onOperatorClick={this.onOperatorClick}
+              onPressValue={this.onPressValue}
+              onResetClick={this.onResetClick}
+              onResultClick={this.onResultClick} />
+          </div>
+        </div>
       </div>
 
     );
@@ -100,4 +131,3 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
 }
 
 
-  

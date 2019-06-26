@@ -1,50 +1,57 @@
 import * as React from "react";
+import { Operation } from '../CalculatorTypes'
 
 interface IKeyPadProps {
-    onPressValue: (val: number) => void;
-    onPlusClick: () => void;
-    onResultClick: () => void;
-    onResetClick: () => void;
+  onPressValue: (val: number) => void;
+  onOperatorClick: (op: Operation) => void;
+  onResultClick: () => void;
+  onResetClick: () => void;
 }
 
-// export const NameField2: React.FC = () => {
-//     return "Kalle";
-// };
-
 export const KeyPad: React.FC<IKeyPadProps> = (props) => {
-    // split properties into variables
-    const { onPressValue, onPlusClick, onResultClick, onResetClick } = props;
+  // split properties into variables
+  const numberButton = (num: number) => {
     return (
-        <div>
-        <div style={{ float: "left" }}>
+      <button onClick={() => onPressValue(num)}>{num}</button>
+    );
+  }
+  const opButton = (op: Operation) => {
+    return (
+      <button onClick={() => onOperatorClick(op)}>{op}</button>
+    );
+  }
+  const { onPressValue, onOperatorClick, onResultClick, onResetClick } = props;
+  return (
+    <div>
+      <div>
+        <div style={{ float: "left", marginLeft: "10px" }}>
           <div>
-            <button onClick={() => onPressValue(7)}>7</button>
-            <button onClick={() => onPressValue(8)}>8</button>
-            <button onClick={() => onPressValue(8)}>9</button>
+            {numberButton(7)}
+            {numberButton(8)}
+            {numberButton(9)}
+            {opButton("+")}
           </div>
           <div>
-            <button onClick={() => onPressValue(4)}>4</button>
-            <button onClick={() => onPressValue(5)}>5</button>
-            <button onClick={() => onPressValue(6)}>6</button>
+            {numberButton(4)}
+            {numberButton(5)}
+            {numberButton(6)}
+            {opButton("-")}
           </div>
           <div>
-            <button onClick={() => onPressValue(1)}>1</button>
-            <button onClick={() => onPressValue(2)}>2</button>
-            <button onClick={() => onPressValue(3)}>3</button>
+            {numberButton(1)}
+            {numberButton(2)}
+            {numberButton(3)}
+            {opButton("*")}
           </div>
           <div>
-            <button onClick={() => onPressValue(0)}>0</button>
+            {numberButton(0)}
+            <button onClick={() => onResetClick()}>C</button>
+            <button onClick={() => onResultClick()}>=</button>
+            {opButton("/")}
           </div>
         </div>
-        <div style={{ float: "left" }}>
-          <div><button onClick={(e) => onPlusClick()}>+</button></div>
-          <div><button>-</button></div>
-          <div><button>/</button></div>
-          <div><button>*</button></div>
-          <div><button onClick={() => onResultClick()}>=</button>
-              <button onClick={(e) => onResetClick()}> C</button></div>
-          </div>
-        </div>
-      
-        );
+      </div>
+    </div>
+
+  );
 };
