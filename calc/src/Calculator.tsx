@@ -54,9 +54,8 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
   }
 
   private calculateResult(op: Operation):number {
-    let tmpRes = 0;
     let entry:number = this.convertEntriesToNumber();
-    let register = this.state.register;
+    let register:number = this.state.register;
     console.log("calculateResult for operator: " + register + " " + op + " " + entry);
     switch (op) {
       case "+": {
