@@ -1,3 +1,11 @@
+# Course information
+Instructor: Per Svensson
+Gist: https://git.io/fjrMs
+
+npx create-react-app projectNameWithLowerCaseStart --typescript
+npm install to install dependencies when cleaned / cloned
+npm start to start web server
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

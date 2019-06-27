@@ -4,7 +4,7 @@ import { KeyPad } from './components/KeyPad'
 import { Operation } from './CalculatorTypes'
 
 type ICalcState = {
-  values: number[],
+  entries: number[],
   operation: Operation,
   register: number
 };
@@ -13,81 +13,76 @@ type ICalcState = {
 
 export class Calculator extends React.PureComponent<{}, ICalcState>{
   state: ICalcState = {
-    values: [],
+    entries: [],
     register: 0,
     operation: "nop"
   }
 
   onPressValue = (val: number) => {
     // ensure that there is a new object here, to avoid s
-    const newArray = this.state.values.concat(val)
+    const newArray = this.state.entries.concat(val)
     this.setState({
-      values: newArray
+      entries: newArray
     });
   }
 
 
   onOperatorClick = (op: Operation) => {
+    console.log("op event: " + op);
 
     this.setState(
       {
-        register: this.state.register,
+        register: this.calculateResult(this.state.operation),
         operation: op,
-        values: []
+        entries: []
       }
     )
   }
 
   onResultClick = () => {
-    let tmpValue:number = this.calculateResult(this.state.operation)
-
     this.setState({
-      values: [],
+      entries: [],
       operation: "nop",
-      register: tmpValue
+      register: this.calculateResult(this.state.operation)
     })
   }
 
   onResetClick = () => {
     this.setState({
-      values: [], register: 0, operation: "+"
+      entries: [], register: 0, operation: "+"
     });
   }
 
-  private calculateResult(operator: Operation) {
+  private calculateResult(op: Operation):number {
     let tmpRes = 0;
-    switch (operator) {
+    let entry:number = this.convertEntriesToNumber();
+    let register = this.state.register;
+    console.log("calculateResult for operator: " + register + " " + op + " " + entry);
+    switch (op) {
       case "+": {
-        tmpRes = this.state.register + this.convertEntriesToNumber();
-        break;
+        return register + entry;
       }
       case "-": {
-        tmpRes = this.state.register - this.convertEntriesToNumber();
-        break;
+//        console.log("minus entered!" + this.state.register + " foo " + this.convertEntriesToNumber())
+        return register - entry;
       }
       case "*": {
-        tmpRes = this.state.register * this.convertEntriesToNumber();
-        break;
+        return register * entry;
       }
       case "/": {
-        tmpRes = this.state.register / this.convertEntriesToNumber();
-        break;
+        return register / entry;
       }
       default: {
-        tmpRes = 0
-        break;
+        return register;        
       }
     }
-
-    tmpRes = this.state.register + this.convertEntriesToNumber();
-    return tmpRes;
   }
 
   private convertEntriesToNumber() {
     let tall = 0;
     let i = 0;
-    for (i = 0; i < this.state.values.length; i++) {
-      tall = tall + this.state.values[i] * Math.pow(10, this.state.values.length - i - 1);
+    for (i = 0; i < this.state.entries.length; i++) {
+      tall = tall + this.state.entries[i] * Math.pow(10, this.state.entries.length - i - 1);
     }
     return tall;
   }
@@ -106,9 +101,9 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
             <span style={{ float: "right", fontSize: "18pt"}}>
               &nbsp;
               {
-                this.state.values.map((v) => {
+                this.state.entries.map((v, i) => {
                   return (
-                    <span>{v}</span>
+                    <span key={i}>{v}</span>
                   )
                 })
               } 
