@@ -10,6 +10,7 @@ interface IKeyPadProps {
 
 export const KeyPad: React.FC<IKeyPadProps> = (props) => {
   // split properties into variables
+  const { onPressValue, onOperatorClick, onResultClick, onResetClick } = props;
   const numberButton = (num: number) => {
     return (
       <button onClick={() => onPressValue(num)}>{num}</button>
@@ -20,7 +21,6 @@ export const KeyPad: React.FC<IKeyPadProps> = (props) => {
       <button onClick={() => onOperatorClick(op)}>{op}</button>
     );
   }
-  const { onPressValue, onOperatorClick, onResultClick, onResetClick } = props;
   return (
     <div>
       <div>

@@ -78,12 +78,12 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
   }
 
   private convertEntriesToNumber() {
-    let tall = 0;
+    let res = 0;
     let i = 0;
     for (i = 0; i < this.state.entries.length; i++) {
-      tall = tall + this.state.entries[i] * Math.pow(10, this.state.entries.length - i - 1);
+      res = res + this.state.entries[i] * Math.pow(10, this.state.entries.length - i - 1);
     }
-    return tall;
+    return res;
   }
 
   render() {
