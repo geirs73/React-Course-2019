@@ -2,7 +2,7 @@ import * as React from "react";
 import { Operation } from '../CalculatorTypes'
 
 interface IKeyPadProps {
-  onPressValue: (val: number) => void;
+  onDigitClick: (val: number) => void;
   onOperatorClick: (op: Operation) => void;
   onResultClick: () => void;
   onResetClick: () => void;
@@ -10,10 +10,10 @@ interface IKeyPadProps {
 
 export const KeyPad: React.FC<IKeyPadProps> = (props) => {
   // split properties into variables
-  const { onPressValue, onOperatorClick, onResultClick, onResetClick } = props;
+  const { onDigitClick, onOperatorClick, onResultClick, onResetClick } = props;
   const numberButton = (num: number) => {
     return (
-      <button onClick={() => onPressValue(num)}>{num}</button>
+      <button onClick={() => onDigitClick(num)}>{num}</button>
     );
   }
   const opButton = (op: Operation) => {

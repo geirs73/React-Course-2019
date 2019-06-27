@@ -4,7 +4,7 @@ import { KeyPad } from './components/KeyPad'
 import { Operation } from './CalculatorTypes'
 
 type ICalcState = {
-  entries: number[],
+  digits: number[],
   operation: Operation,
   register: number
 };
@@ -13,16 +13,16 @@ type ICalcState = {
 
 export class Calculator extends React.PureComponent<{}, ICalcState>{
   state: ICalcState = {
-    entries: [],
+    digits: [],
     register: 0,
     operation: "nop"
   }
 
-  onPressValue = (val: number) => {
+  onDigitClick = (val: number) => {
     // ensure that there is a new object here, to avoid s
-    const newArray = this.state.entries.concat(val)
+    const newArray = this.state.digits.concat(val)
     this.setState({
-      entries: newArray
+      digits: newArray
     });
   }
 
@@ -34,14 +34,14 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
       {
         register: this.calculateResult(this.state.operation),
         operation: op,
-        entries: []
+        digits: []
       }
     )
   }
 
   onResultClick = () => {
     this.setState({
-      entries: [],
+      digits: [],
       operation: "nop",
       register: this.calculateResult(this.state.operation)
     })
@@ -49,12 +49,12 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
 
   onResetClick = () => {
     this.setState({
-      entries: [], register: 0, operation: "+"
+      digits: [], register: 0, operation: "+"
     });
   }
 
   private calculateResult(op: Operation):number {
-    let entry:number = this.convertEntriesToNumber();
+    let entry:number = this.convertDigitsToNumber();
     let register:number = this.state.register;
     console.log("calculateResult for operator: " + register + " " + op + " " + entry);
     switch (op) {
@@ -62,7 +62,6 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
         return register + entry;
       }
       case "-": {
-//        console.log("minus entered!" + this.state.register + " foo " + this.convertEntriesToNumber())
         return register - entry;
       }
       case "*": {
@@ -77,11 +76,11 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
     }
   }
 
-  private convertEntriesToNumber() {
+  private convertDigitsToNumber() {
     let res = 0;
     let i = 0;
-    for (i = 0; i < this.state.entries.length; i++) {
-      res = res + this.state.entries[i] * Math.pow(10, this.state.entries.length - i - 1);
+    for (i = 0; i < this.state.digits.length; i++) {
+      res = res + this.state.digits[i] * Math.pow(10, this.state.digits.length - i - 1);
     }
     return res;
   }
@@ -100,7 +99,7 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
             <span style={{ float: "right", fontSize: "18pt"}}>
               &nbsp;
               {
-                this.state.entries.map((v, i) => {
+                this.state.digits.map((v, i) => {
                   return (
                     <span key={i}>{v}</span>
                   )
@@ -111,7 +110,7 @@ export class Calculator extends React.PureComponent<{}, ICalcState>{
           <div style={{ float: "right", clear: "left", paddingTop: "50px" }}>
             <KeyPad
               onOperatorClick={this.onOperatorClick}
-              onPressValue={this.onPressValue}
+              onDigitClick={this.onDigitClick}
               onResetClick={this.onResetClick}
               onResultClick={this.onResultClick} />
           </div>
